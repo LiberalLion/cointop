@@ -16,20 +16,18 @@ include_dirs = [".", "debug", "extra", "test", "_example"]
 
 
 def is_target(fpath):
-    if os.path.splitext(fpath)[-1] == ".go":
-        return True
-    return False
+    return os.path.splitext(fpath)[-1] == ".go"
 
 
 def update_copyright(fpath):
-    print("processing " + fpath)
+    print(f"processing {fpath}")
     f = io.open(fpath, 'r', encoding='utf-8')
     fstr = f.read()
     f.close()
 
-    # remove old
-    m = re.search('^// Copyright .+?\r?\n\r?\n', fstr, re.MULTILINE|re.DOTALL)
-    if m:
+    if m := re.search(
+        '^// Copyright .+?\r?\n\r?\n', fstr, re.MULTILINE | re.DOTALL
+    ):
         fstr = fstr[m.end():]
 
     # add new
